@@ -206,16 +206,15 @@ fetchPopularGame();
       </div>
 <script>const apiKey = "5206b0091f914fada1003edb4613060f";
 
-async function fetchSecondPopularGame() {
+async function fetchPopularGame() {
   try {
-    const currentDate = new Date().toISOString().split("T")[0]; // Get the current date in the format "YYYY-MM-DD"
-    const response = await fetch(`https://api.rawg.io/api/games?key=${apiKey}&dates=${currentDate},${currentDate}&ordering=-added&page_size=2`);
+    const response = await fetch(`https://api.rawg.io/api/games?key=${apiKey}&ordering=-rating&tags_exclude=nsfw`);
     const data = await response.json();
 
-    const games = data.results;
+    const games = data.results.filter(game => !game.tags.some(tag => tag.slug === "nsfw"));
 
-    if (games.length >= 2) {
-      const game = games[1]; // Index 1 for the second most popular game
+    if (games.length > 0) {
+      const game = games[0];
 
       const gameBox = document.querySelector(".bs");
 
@@ -227,7 +226,7 @@ async function fetchSecondPopularGame() {
       const gameBoxContent = `
         <div class="bsx">
           <a href="#" title="${gameTitle}">
-            <div class="limit">
+            <div class="limit" id="game-image-container">
               <div class="ply"></div>
               <img src="${gameImage}" class="ts-post-image wp-post-image attachment-medium size-medium game-image" loading="lazy" alt="">
             </div>
@@ -255,18 +254,18 @@ async function fetchSecondPopularGame() {
 
       gameBox.innerHTML = gameBoxContent;
 
-      const gameImageContainer = document.querySelector(".limit");
-      gameImageContainer.style.height = "100%"; // Set the height of the container to fill the available space
+      const gameImageContainer = document.getElementById("game-image-container");
+      const gameImageElement = gameImageContainer.querySelector("img");
+      gameImageElement.style.height = "100%"; // Set the height of the image to fill the container
     } else {
-      console.log("Insufficient games found.");
+      console.log("No non-excluded games found.");
     }
   } catch (error) {
     console.log(error);
   }
 }
 
-fetchSecondPopularGame();
-
+fetchPopularGame();
 
 </script>
 
