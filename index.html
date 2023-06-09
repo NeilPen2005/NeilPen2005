@@ -167,7 +167,7 @@ async function fetchPopularGame() {
       const gameImageElement = gameImageContainer.querySelector("img");
       gameImageElement.style.height = "100%"; // Set the height of the image to fill the container
     } else {
-      console.log("No non-NSFW games found.");
+      console.log("No non-excluded games found.");
     }
   } catch (error) {
     console.log(error);
@@ -178,119 +178,100 @@ fetchPopularGame();
 
 </script>
 
+      <div class="bs">
+        <div class="bsx">
+          <a href="#" title="">
+            <div class="limit" id="game-image-container">
+              <div class="ply"></div>
+              <img src="" class="ts-post-image wp-post-image attachment-medium size-medium game-image" loading="lazy" alt="">
+            </div>
+            <div class="bigor">
+              <div class="tt"></div>
+              <div class="adds">
+                <div class="epxs"></div>
+                <div class="rt">
+                  <div class="rating">
+                    <div class="rating-prc">
+                      <div class="rtp">
+                        <div class="rtb"><span style="width:0%"></span></div>
+                      </div>
+                    </div>
+                    <div class="numscore"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+<script>const apiKey = "5206b0091f914fada1003edb4613060f";
 
-      <div class="bs">
+async function fetchSecondPopularGame() {
+  try {
+    const response = await fetch(`https://api.rawg.io/api/games?key=${apiKey}&ordering=-rating&tags_exclude=nsfw&page_size=2`);
+    const data = await response.json();
+
+    const games = data.results.filter(game => !game.tags.some(tag => tag.slug === "nsfw"));
+
+    if (games.length >= 2) {
+      const game = games[1]; // Index 1 for the second most popular game
+
+      const gameBox = document.querySelector(".bs");
+
+      const gameTitle = game.name;
+      const gameImage = game.background_image;
+      const gameRating = (game.rating * 2).toFixed(1);
+      const gameTags = game.tags.map(tag => tag.name).join(', ');
+
+      const gameBoxContent = `
         <div class="bsx">
-          <a href="#" title="Game 2">
-            <div class="limit">
+          <a href="#" title="${gameTitle}">
+            <div class="limit" id="game-image-container">
               <div class="ply"></div>
-              <img src="placeholder-image.png" class="ts-post-image wp-post-image attachment-medium size-medium" loading="lazy" alt="">
+              <img src="${gameImage}" class="ts-post-image wp-post-image attachment-medium size-medium game-image" loading="lazy" alt="">
             </div>
             <div class="bigor">
               <div class="tt">
-                Game 2
+                ${gameTitle}
               </div>
               <div class="adds">
-                <div class="epxs">Subtext</div>
+                <div class="epxs">${gameTags}</div>
                 <div class="rt">
                   <div class="rating">
                     <div class="rating-prc">
                       <div class="rtp">
-                        <div class="rtb"><span style="width:98%"></span></div>
+                        <div class="rtb"><span style="width:${gameRating * 10}%"></span></div>
                       </div>
                     </div>
-                    <div class="numscore">9.8</div>
+                    <div class="numscore">${gameRating}</div>
                   </div>
                 </div>
               </div>
             </div>
           </a>
         </div>
-      </div>
-      <div class="bs">
-        <div class="bsx">
-          <a href="#" title="Game 3">
-            <div class="limit">
-              <div class="ply"></div>
-              <img src="placeholder-image.png" class="ts-post-image wp-post-image attachment-medium size-medium" loading="lazy" alt="">
-            </div>
-            <div class="bigor">
-              <div class="tt">
-                Game 3
-              </div>
-              <div class="adds">
-                <div class="epxs">Subtext</div>
-                <div class="rt">
-                  <div class="rating">
-                    <div class="rating-prc">
-                      <div class="rtp">
-                        <div class="rtb"><span style="width:99%"></span></div>
-                      </div>
-                    </div>
-                    <div class="numscore">9.9</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </a>
-        </div>
-      </div>
-      <div class="bs">
-        <div class="bsx">
-          <a href="#" title="Game 4">
-            <div class="limit">
-              <div class="ply"></div>
-              <img src="placeholder-image.png" class="ts-post-image wp-post-image attachment-medium size-medium" loading="lazy" alt="">
-            </div>
-            <div class="bigor">
-              <div class="tt">
-                Game 4
-              </div>
-              <div class="adds">
-                <div class="epxs">Subtext</div>
-                <div class="rt">
-                  <div class="rating">
-                    <div class="rating-prc">
-                      <div class="rtp">
-                        <div class="rtb"><span style="width:93%"></span></div>
-                      </div>
-                    </div>
-                    <div class="numscore">9.3</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </a>
-        </div>
-      </div>
-      <div class="bs">
-        <div class="bsx">
-          <a href="#" title="Game 5">
-            <div class="limit">
-              <div class="ply"></div>
-              <img src="placeholder-image.png" class="ts-post-image wp-post-image attachment-medium size-medium" loading="lazy" alt="">
-            </div>
-            <div class="bigor">
-              <div class="tt">
-                Game 5
-              </div>
-              <div class="adds">
-                <div class="epxs">Subtext</div>
-                <div class="rt">
-                  <div class="rating">
-                    <div class="rating-prc">
-                      <div class="rtp">
-                        <div class="rtb"><span style="width:98%"></span></div>
-                      </div>
-                    </div>
-                    <div class="numscore">9.8</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </a>
-        </div>
-      </div>
+      `;
+
+      gameBox.innerHTML = gameBoxContent;
+
+      const gameImageContainer = document.getElementById("game-image-container");
+      const gameImageElement = gameImageContainer.querySelector("img");
+      gameImageElement.style.height = "100%"; // Set the height of the image to fill the container
+    } else {
+      console.log("Insufficient non-NSFW games found.");
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+fetchSecondPopularGame();
+</script>
+
+
+
+
+
     </div>
   </div>
 
