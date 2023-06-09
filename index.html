@@ -112,47 +112,54 @@
           </a>
         </div>
       </div>
-
-      <script>
-  // Fetch the most popular game from the API
+      
+ <script>
   const apiKey = "5206b0091f914fada1003edb4613060f";
 
-  function fetchMostPopularGame() {
-    const popularGamesUrl = `https://api.rawg.io/api/games?key=${apiKey}&ordering=-rating`;
+  async function fetchPopularGame() {
+    try {
+      const response = await fetch(`https://api.rawg.io/api/games?key=${apiKey}&ordering=-rating`);
+      const data = await response.json();
 
-    fetch(popularGamesUrl)
-      .then(response => response.json())
-      .then(data => {
-        const mostPopularGame = data.results[0]; // Get the first game from the results array
+      const game = data.results[0];
 
-        // Update the HTML with the most popular game data
-        const bsxElement = document.querySelector('.bsx');
-        bsxElement.href = mostPopularGame.website;
-        bsxElement.title = mostPopularGame.name;
+      const gameBox = document.querySelector(".bs");
 
-        const imgElement = bsxElement.querySelector('img');
-        imgElement.src = mostPopularGame.background_image;
-        imgElement.alt = mostPopularGame.name;
-
-        const ttElement = bsxElement.querySelector('.tt');
-        ttElement.textContent = mostPopularGame.name;
-
-        const epxsElement = bsxElement.querySelector('.epxs');
-        epxsElement.textContent = mostPopularGame.description_raw;
-
-        const rtbElement = bsxElement.querySelector('.rtb span');
-        rtbElement.style.width = `${mostPopularGame.rating * 10}%`;
-
-        const numscoreElement = bsxElement.querySelector('.numscore');
-        numscoreElement.textContent = mostPopularGame.rating.toFixed(1);
-      })
-      .catch(error => {
-        console.log('Error fetching most popular game:', error);
-      });
+      // Update the HTML content with the game information
+      gameBox.innerHTML = `
+        <div class="bsx">
+          <a href="#" title="${game.name}">
+            <div class="limit">
+              <div class="ply"></div>
+              <img src="${game.background_image}" class="ts-post-image wp-post-image attachment-medium size-medium" loading="lazy" alt="">
+            </div>
+            <div class="bigor">
+              <div class="tt">
+                ${game.name}
+              </div>
+              <div class="adds">
+                <div class="epxs">${game.released}</div>
+                <div class="rt">
+                  <div class="rating">
+                    <div class="rating-prc">
+                      <div class="rtp">
+                        <div class="rtb"><span style="width:${game.rating * 10}%"></span></div>
+                      </div>
+                    </div>
+                    <div class="numscore">${game.rating}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      `;
+    } catch (error) {
+      console.log(error);
+    }
   }
 
-  // Fetch the most popular game on page load
-  fetchMostPopularGame();
+  fetchPopularGame();
 </script>
 
       <div class="bs">
