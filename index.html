@@ -208,7 +208,7 @@ fetchPopularGame();
 
 async function fetchSecondPopularGame() {
   try {
-    const response = await fetch(`https://api.rawg.io/api/games?key=${apiKey}&ordering=-rating&tags_exclude=nsfw`);
+    const response = await fetch(`https://api.rawg.io/api/games?key=${apiKey}&dates=2023-05-30,2023-05-30&ordering=-rating&page_size=2&tags_exclude=nsfw`);
     const data = await response.json();
 
     const games = data.results.filter(game => !game.tags.some(tag => tag.slug === "nsfw"));
@@ -266,7 +266,6 @@ async function fetchSecondPopularGame() {
 }
 
 fetchSecondPopularGame();
-
 
 </script>
 
