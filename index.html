@@ -115,9 +115,10 @@
       <script>
  const apiKey = "5206b0091f914fada1003edb4613060f";
 
-async function fetchPopularGame() {
+async function fetchPopularGameToday() {
   try {
-    const response = await fetch(`https://api.rawg.io/api/games?key=${apiKey}&ordering=-rating`);
+    const currentDate = new Date().toISOString().slice(0, 10);
+    const response = await fetch(`https://api.rawg.io/api/games?key=${apiKey}&dates=${currentDate},${currentDate}&ordering=-rating`);
     const data = await response.json();
 
     const game = data.results[0];
@@ -164,7 +165,7 @@ async function fetchPopularGame() {
   }
 }
 
-fetchPopularGame();
+fetchPopularGameToday();
 
 </script>
 
