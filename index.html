@@ -215,7 +215,7 @@ async function fetchSecondPopularGame() {
     const games = data.results.filter(game => !game.tags.some(tag => tag.slug === "nsfw"));
 
     let game;
-    if (games.length > 1) {
+    if (games.length >= 2) {
       game = games[1];
     } else {
       const yesterday = new Date();
@@ -277,36 +277,8 @@ async function fetchSecondPopularGame() {
 fetchSecondPopularGame();
 
 
+
 </script>
-
-      <div class="bs">
-        <div class="bsx">
-          <a href="#" title="">
-            <div class="limit" id="game-image-container">
-              <div class="ply"></div>
-              <img src="" class="ts-post-image wp-post-image attachment-medium size-medium game-image" loading="lazy" alt="">
-            </div>
-            <div class="bigor">
-              <div class="tt"></div>
-              <div class="adds">
-                <div class="epxs"></div>
-                <div class="rt">
-                  <div class="rating">
-                    <div class="rating-prc">
-                      <div class="rtp">
-                        <div class="rtb"><span style="width:0%"></span></div>
-                      </div>
-                    </div>
-                    <div class="numscore"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </a>
-        </div>
-      </div>
-
-
 
 
 
