@@ -208,10 +208,11 @@ fetchPopularGame();
 
 async function fetchSecondPopularGame() {
   try {
-    const response = await fetch(`https://api.rawg.io/api/games?key=${apiKey}&ordering=-rating&tags_exclude=nsfw&page_size=2`);
+    const currentDate = new Date().toISOString().split("T")[0]; // Get the current date in the format "YYYY-MM-DD"
+    const response = await fetch(`https://api.rawg.io/api/games?key=${apiKey}&dates=${currentDate},${currentDate}&ordering=-added&page_size=2`);
     const data = await response.json();
 
-    const games = data.results.filter(game => !game.tags.some(tag => tag.slug === "nsfw"));
+    const games = data.results;
 
     if (games.length >= 2) {
       const game = games[1]; // Index 1 for the second most popular game
@@ -257,7 +258,7 @@ async function fetchSecondPopularGame() {
       const gameImageContainer = document.querySelector(".limit");
       gameImageContainer.style.height = "100%"; // Set the height of the container to fill the available space
     } else {
-      console.log("Insufficient non-NSFW games found.");
+      console.log("Insufficient games found.");
     }
   } catch (error) {
     console.log(error);
