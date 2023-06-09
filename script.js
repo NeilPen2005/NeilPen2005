@@ -1,42 +1,116 @@
 const apiKey = "5206b0091f914fada1003edb4613060f";
 
-fetch(`https://api.rawg.io/api/games?key=${apiKey}`)
-  .then(response => response.json())
-  .then(data => {
-    // Process the game data and generate the HTML content
-    populateGames(data.results);
-  })
-  .catch(error => {
-    console.error("Error fetching game data:", error);
-  });
+async function fetchPopularGame() {
+  try {
+    const currentDate = new Date().toISOString().split("T")[0];
+    const response = await fetch(`https://api.rawg.io/api/games?key=${apiKey}&dates=${currentDate},${currentDate}&ordering=-rating&page_size=1`);
+    const data = await response.json();
 
-//generate the HTML content for each game and append it to the appropriate placeholders in the index.html file
-function populateGames(games) {
-  const gameList = document.getElementById("game-list");
+    const game = data.results[0];
 
-  games.forEach(game => {
-    const listItem = document.createElement("li");
-    const gameTitle = document.createElement("h2");
-    const gameImage = document.createElement("img");
-    const gameGenres = document.createElement("span");
-    const gameRating = document.createElement("div");
+    const gameBox = document.querySelector(".bs");
 
-    gameTitle.innerHTML = `<a href="${game.url}" rel="noopener noreferrer">${game.name}</a>`;
-    gameImage.src = game.background_image;
-    gameGenres.innerHTML = `<b>Genres</b>: ${game.genres.map(genre => `<a href="${genre.url}" rel="tag">${genre.name}</a>`).join(", ")}`;
-    gameRating.innerHTML = `
-      <div class="rating-prc">
-        <div class="rtp">
-          <div class="rtb"><span style="width:${game.rating * 10}%"></span></div>
-        </div>
+    const gameTitle = game.name;
+    const gameImage = game.background_image;
+    const gameRating = (game.rating * 2).toFixed(1);
+    const gameTags = game.tags.map(tag => tag.name).join(', ');
+
+    const gameBoxContent = `
+      <div class="bsx">
+        <a href="#" title="${gameTitle}">
+          <div class="limit" id="game-image-container1">
+            <div class="ply"></div>
+            <img src="${gameImage}" class="ts-post-image wp-post-image attachment-medium size-medium game-image" loading="lazy" alt="">
+          </div>
+          <div class="bigor">
+            <div class="tt">
+              ${gameTitle}
+            </div>
+            <div class="adds">
+              <div class="epxs">${gameTags}</div>
+              <div class="rt">
+                <div class="rating">
+                  <div class="rating-prc">
+                    <div class="rtp">
+                      <div class="rtb"><span style="width:${gameRating * 10}%"></span></div>
+                    </div>
+                  </div>
+                  <div class="numscore">${gameRating}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </a>
       </div>
-      <div class="numscore">${game.rating}</div>
     `;
 
-    listItem.appendChild(gameTitle);
-    listItem.appendChild(gameImage);
-    listItem.appendChild(gameGenres);
-    listItem.appendChild(gameRating);
-    gameList.appendChild(listItem);
-  });
+    gameBox.innerHTML = gameBoxContent;
+
+    const gameImageContainer = document.getElementById("game-image-container1");
+    const gameImageElement = gameImageContainer.querySelector("img");
+    gameImageElement.style.objectFit = "cover";
+    gameImageElement.style.objectPosition = "center";
+  } catch (error) {
+    console.log(error);
+  }
 }
+
+async function fetchYesterdayPopularGame() {
+  try {
+    const today = new Date();
+    today.setDate(today.getDate() - 1);
+    const formattedDate = today.toISOString().split("T")[0];
+    const response = await fetch(`https://api.rawg.io/api/games?key=${apiKey}&dates=${formattedDate},${formattedDate}&ordering=-rating&page_size=1`);
+    const data = await response.json();
+
+    const game = data.results[0];
+
+    const gameBox = document.querySelector(".bs:nth-child(2)");
+
+    const gameTitle = game.name;
+    const gameImage = game.background_image;
+    const gameRating = (game.rating * 2).toFixed(1);
+    const gameTags = game.tags.map(tag => tag.name).join(', ');
+
+    const gameBoxContent = `
+      <div class="bsx">
+        <a href="#" title="${gameTitle}">
+          <div class="limit" id="game-image-container2">
+            <div class="ply"></div>
+            <img src="${gameImage}" class="ts-post-image wp-post-image attachment-medium size-medium game-image" loading="lazy" alt="">
+          </div>
+          <div class="bigor">
+            <div class="tt">
+              ${gameTitle}
+            </div>
+            <div class="adds">
+              <div class="epxs">${gameTags}</div>
+              <div class="rt">
+                <div class="rating">
+                  <div class="rating-prc">
+                    <div class="rtp">
+                      <div class="rtb"><span style="width:${gameRating * 10}%"></span></div>
+                    </div>
+                  </div>
+                  <div class="numscore">${gameRating}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+    `;
+
+    gameBox.innerHTML = gameBoxContent;
+
+    const gameImageContainer = document.getElementById("game-image-container2");
+    const gameImageElement = gameImageContainer.querySelector("img");
+    gameImageElement.style.objectFit = "cover";
+    gameImageElement.style.objectPosition = "center";
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+fetchPopularGame();
+fetchYesterdayPopularGame();
