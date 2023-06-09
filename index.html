@@ -124,35 +124,40 @@
 
       const gameBox = document.querySelector(".bs");
 
-      const gameTitle = document.createElement("div");
-      gameTitle.className = "tt";
-      gameTitle.textContent = game.name;
+      const gameTitle = game.name;
+      const gameImage = game.background_image;
+      const gameRating = game.rating.toFixed(1);
 
-      const gameImage = document.createElement("img");
-      gameImage.className = "ts-post-image wp-post-image attachment-medium size-medium";
-      gameImage.src = game.background_image;
-      gameImage.alt = "";
+      const gameBoxContent = `
+        <div class="bsx">
+          <a href="#" title="${gameTitle}">
+            <div class="limit">
+              <div class="ply"></div>
+              <img src="${gameImage}" class="ts-post-image wp-post-image attachment-medium size-medium" loading="lazy" alt="">
+            </div>
+            <div class="bigor">
+              <div class="tt">
+                ${gameTitle}
+              </div>
+              <div class="adds">
+                <div class="epxs">Subtext</div>
+                <div class="rt">
+                  <div class="rating">
+                    <div class="rating-prc">
+                      <div class="rtp">
+                        <div class="rtb"><span style="width:${gameRating * 10}%"></span></div>
+                      </div>
+                    </div>
+                    <div class="numscore">${gameRating}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      `;
 
-      const gameRating = document.createElement("div");
-      gameRating.className = "rating-prc";
-      gameRating.innerHTML = `<div class="rtp"><div class="rtb"><span style="width:${game.rating * 10}%"></span></div></div>`;
-
-      const gameScore = document.createElement("div");
-      gameScore.className = "numscore";
-      gameScore.textContent = game.rating;
-
-      const gameInfo = document.createElement("div");
-      gameInfo.className = "adds";
-      gameInfo.appendChild(gameRating);
-      gameInfo.appendChild(gameScore);
-
-      const gameBoxContent = document.createElement("div");
-      gameBoxContent.className = "bsx";
-      gameBoxContent.appendChild(gameTitle);
-      gameBoxContent.appendChild(gameImage);
-      gameBoxContent.appendChild(gameInfo);
-
-      gameBox.appendChild(gameBoxContent);
+      gameBox.innerHTML = gameBoxContent;
     } catch (error) {
       console.log(error);
     }
