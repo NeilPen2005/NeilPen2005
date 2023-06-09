@@ -112,8 +112,8 @@
           </a>
         </div>
       </div>
-      
- <script>
+
+      <script>
   const apiKey = "5206b0091f914fada1003edb4613060f";
 
   async function fetchPopularGame() {
@@ -123,37 +123,37 @@
 
       const game = data.results[0];
 
-      const gameBox = document.querySelector(".bs");
+      const gameBox = document.querySelector("bs");
 
-      // Update the HTML content with the game information
-      gameBox.innerHTML = `
-        <div class="bsx">
-          <a href="#" title="${game.name}">
-            <div class="limit">
-              <div class="ply"></div>
-              <img src="${game.background_image}" class="ts-post-image wp-post-image attachment-medium size-medium" loading="lazy" alt="">
-            </div>
-            <div class="bigor">
-              <div class="tt">
-                ${game.name}
-              </div>
-              <div class="adds">
-                <div class="epxs">${game.released}</div>
-                <div class="rt">
-                  <div class="rating">
-                    <div class="rating-prc">
-                      <div class="rtp">
-                        <div class="rtb"><span style="width:${game.rating * 10}%"></span></div>
-                      </div>
-                    </div>
-                    <div class="numscore">${game.rating}</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </a>
-        </div>
-      `;
+      const gameTitle = document.createElement("div");
+      gameTitle.className = "tt";
+      gameTitle.textContent = game.name;
+
+      const gameImage = document.createElement("img");
+      gameImage.className = "ts-post-image wp-post-image attachment-medium size-medium";
+      gameImage.src = game.background_image;
+      gameImage.alt = "";
+
+      const gameRating = document.createElement("div");
+      gameRating.className = "rating-prc";
+      gameRating.innerHTML = `<div class="rtp"><div class="rtb"><span style="width:${game.rating * 10}%"></span></div></div>`;
+
+      const gameScore = document.createElement("div");
+      gameScore.className = "numscore";
+      gameScore.textContent = game.rating;
+
+      const gameInfo = document.createElement("div");
+      gameInfo.className = "adds";
+      gameInfo.appendChild(gameRating);
+      gameInfo.appendChild(gameScore);
+
+      const gameBoxContent = document.createElement("div");
+      gameBoxContent.className = "bsx";
+      gameBoxContent.appendChild(gameTitle);
+      gameBoxContent.appendChild(gameImage);
+      gameBoxContent.appendChild(gameInfo);
+
+      gameBox.appendChild(gameBoxContent);
     } catch (error) {
       console.log(error);
     }
@@ -161,6 +161,7 @@
 
   fetchPopularGame();
 </script>
+
 
       <div class="bs">
         <div class="bsx">
