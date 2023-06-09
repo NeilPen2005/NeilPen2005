@@ -88,9 +88,9 @@
       <div class="bs">
         <div class="bsx">
           <a href="#" title="">
-            <div class="limit">
+            <div class="limit" id="game-image-container">
               <div class="ply"></div>
-              <img src="" class="ts-post-image wp-post-image attachment-medium size-medium" loading="lazy" alt="">
+              <img src="" class="ts-post-image wp-post-image attachment-medium size-medium game-image" loading="lazy" alt="">
             </div>
             <div class="bigor">
               <div class="tt"></div>
@@ -132,7 +132,7 @@ async function fetchPopularGame() {
     const gameBoxContent = `
       <div class="bsx">
         <a href="#" title="${gameTitle}">
-          <div class="limit">
+          <div class="limit" id="game-image-container">
             <div class="ply"></div>
             <img src="${gameImage}" class="ts-post-image wp-post-image attachment-medium size-medium game-image" loading="lazy" alt="">
           </div>
@@ -159,12 +159,17 @@ async function fetchPopularGame() {
     `;
 
     gameBox.innerHTML = gameBoxContent;
+
+    const gameImageContainer = document.getElementById("game-image-container");
+    const gameImageElement = gameImageContainer.querySelector("img");
+    gameImageElement.style.height = "100%"; // Set the height of the image to fill the container
   } catch (error) {
     console.log(error);
   }
 }
 
 fetchPopularGame();
+
 
 
 </script>
