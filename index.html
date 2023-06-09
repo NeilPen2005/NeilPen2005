@@ -210,34 +210,79 @@ fetchPopularGame();
           <div id="wpop-items">
             <div class="serieslist pop wpop wpop-weekly" style="">
               <ul>
-                <li>
+                <li id="highestRatedWeekly">
                   <div class="ctr">1</div>
                   <div class="imgseries">
                     <a class="series" href="" rel="">
-                      <img src="placeholder.png" class="ts-post-image wp-post-image attachment-medium size-medium" loading="lazy" alt=""> </a>
+                      <img src="" class="ts-post-image wp-post-image attachment-medium size-medium" loading="lazy" alt="">
+                    </a>
                   </div>
                   <div class="leftseries">
                     <h2>
                       <a class="series" href="" rel="">Game 1</a>
                     </h2>
-                    <span><b>Genres</b>: <a href="" rel="tag">Tag 1</a>, <a href="" rel="tag">Tag 2</a>, <a href="" rel="tag">Tag 3</a>, <a href="" rel="tag">Tag 4</a>, <a href="" rel="tag">Tag 5</a>, <a href="" rel="tag">Tag 6</a>, <a href="" rel="tag">Tag 7</a></span> <div class="rt">
-                    <div class="rating">
-                      <div class="rating-prc">
-                        <div class="rtp">
-                          <div class="rtb"><span style="width:98%"></span></div>
+                    <span><b>Genres</b>: <span id="weeklyGenres"></span></span>
+                    <div class="rt">
+                      <div class="rating">
+                        <div class="rating-prc">
+                          <div class="rtp">
+                            <div class="rtb"><span id="weeklyRating"></span></div>
+                          </div>
                         </div>
+                        <div class="numscore" id="weeklyRatingScore"></div>
                       </div>
-                      <div class="numscore">9.8</div>
                     </div>
                   </div>
-                  </div>
                 </li>
-
-
-
-
               </ul>
             </div>
+            <script>const apiKey = "5206b0091f914fada1003edb4613060f"
+
+// Function to fetch the highest-rated game in the past 7 days
+async function fetchHighestRatedGame() {
+  try {
+    const currentDate = new Date();
+    const pastDate = new Date(currentDate.getTime() - 7 * 24 * 60 * 60 * 1000);
+    const formattedPastDate = pastDate.toISOString().split("T")[0];
+
+    const response = await fetch(`https://api.rawg.io/api/games?key=${apiKey}&dates=${formattedPastDate},${currentDate.toISOString()}&ordering=-rating&page_size=1`);
+    const data = await response.json();
+
+    const highestRatedGame = data.results[0];
+
+    // Update the HTML elements with the fetched data
+    document.getElementById("highestRatedWeekly").innerHTML = `
+      <div class="ctr">1</div>
+      <div class="imgseries">
+        <a class="series" href="" rel="">
+          <img src="${highestRatedGame.background_image}" class="ts-post-image wp-post-image attachment-medium size-medium" loading="lazy" alt="">
+        </a>
+      </div>
+      <div class="leftseries">
+        <h2>
+          <a class="series" href="" rel="">${highestRatedGame.name}</a>
+        </h2>
+        <span><b>Genres</b>: ${highestRatedGame.genres.map(genre => `<a href="" rel="tag">${genre.name}</a>`).join(", ")}</span>
+        <div class="rt">
+          <div class="rating">
+            <div class="rating-prc">
+              <div class="rtp">
+                <div class="rtb"><span style="width:${highestRatedGame.rating * 10}%"></span></div>
+              </div>
+            </div>
+            <div class="numscore">${(highestRatedGame.rating * 2).toFixed(1)}</div>
+          </div>
+        </div>
+      </div>
+    `;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+fetchHighestRatedGame();
+</script>
+
             <div class="serieslist pop wpop wpop-monthly" style="display: none;">
               <ul>
                 <li>
@@ -291,6 +336,9 @@ fetchPopularGame();
 
 
               </ul>
+
+
+
             </div>
           </div>
 
