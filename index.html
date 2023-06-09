@@ -129,33 +129,34 @@
       const gameRating = game.rating.toFixed(1);
 
       const gameBoxContent = `
-        <div class="bsx">
-          <a href="#" title="${gameTitle}">
-            <div class="limit">
-              <div class="ply"></div>
-              <img src="${gameImage}" class="ts-post-image wp-post-image attachment-medium size-medium" loading="lazy" alt="">
-            </div>
-            <div class="bigor">
-              <div class="tt">
-                ${gameTitle}
-              </div>
-              <div class="adds">
-                <div class="epxs">Subtext</div>
-                <div class="rt">
-                  <div class="rating">
-                    <div class="rating-prc">
-                      <div class="rtp">
-                        <div class="rtb"><span style="width:${gameRating * 10}%"></span></div>
-                      </div>
-                    </div>
-                    <div class="numscore">${gameRating}</div>
-                  </div>
+  <div class="bsx">
+    <a href="#" title="${gameTitle}">
+      <div class="limit">
+        <div class="ply"></div>
+        <img src="${gameImage}" class="ts-post-image wp-post-image attachment-medium size-medium game-image" loading="lazy" alt="">
+      </div>
+      <div class="bigor">
+        <div class="tt">
+          ${gameTitle}
+        </div>
+        <div class="adds">
+          <div class="epxs">Subtext</div>
+          <div class="rt">
+            <div class="rating">
+              <div class="rating-prc">
+                <div class="rtp">
+                  <div class="rtb"><span style="width:${gameRating * 10}%"></span></div>
                 </div>
               </div>
+              <div class="numscore">${gameRating}</div>
             </div>
-          </a>
+          </div>
         </div>
-      `;
+      </div>
+    </a>
+  </div>
+`;
+
 
       gameBox.innerHTML = gameBoxContent;
     } catch (error) {

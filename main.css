@@ -82,6 +82,11 @@ a:hover {
   margin-top: 5px;
 }
 
+.game-image {
+  width: 150px; /* Adjust the width as needed */
+  height: auto; /* Maintain the aspect ratio */
+}
+
 
 
 
