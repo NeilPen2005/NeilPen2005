@@ -117,56 +117,48 @@ const apiKey = "5206b0091f914fada1003edb4613060f";
 
 async function fetchPopularGame() {
   try {
-    const response = await fetch(`https://api.rawg.io/api/games?key=${apiKey}&ordering=-rating&page_size=10`);
+    const response = await fetch(`https://api.rawg.io/api/games?key=${apiKey}&ordering=-rating`);
     const data = await response.json();
 
-    const games = data.results;
-    const currentDate = new Date().toISOString().slice(0, 10);
+    const game = data.results[0];
 
-    // Filter games released on the current date
-    const todayGames = games.filter(game => game.released.slice(0, 10) === currentDate);
+    const gameBox = document.querySelector(".bs");
 
-    if (todayGames.length > 0) {
-      const game = todayGames[0];
+    const gameTitle = game.name;
+    const gameImage = game.background_image;
+    const gameRating = game.rating.toFixed(1);
+    const gameTags = game.tags.map(tag => tag.name).join(', ');
 
-      const gameBox = document.querySelector(".bs");
-
-      const gameTitle = game.name;
-      const gameImage = game.background_image;
-      const gameRating = game.rating.toFixed(1);
-      const gameTags = game.tags.map(tag => tag.name).join(', ');
-
-      const gameBoxContent = `
-        <div class="bsx">
-          <a href="#" title="${gameTitle}">
-            <div class="limit">
-              <div class="ply"></div>
-              <img src="${gameImage}" class="ts-post-image wp-post-image attachment-medium size-medium game-image" loading="lazy" alt="">
+    const gameBoxContent = `
+      <div class="bsx">
+        <a href="#" title="${gameTitle}">
+          <div class="limit">
+            <div class="ply"></div>
+            <img src="${gameImage}" class="ts-post-image wp-post-image attachment-medium size-medium game-image" loading="lazy" alt="">
+          </div>
+          <div class="bigor">
+            <div class="tt">
+              ${gameTitle}
             </div>
-            <div class="bigor">
-              <div class="tt">
-                ${gameTitle}
-              </div>
-              <div class="adds">
-                <div class="epxs">${gameTags}</div>
-                <div class="rt">
-                  <div class="rating">
-                    <div class="rating-prc">
-                      <div class="rtp">
-                        <div class="rtb"><span style="width:${gameRating * 10}%"></span></div>
-                      </div>
+            <div class="adds">
+              <div class="epxs">${gameTags}</div>
+              <div class="rt">
+                <div class="rating">
+                  <div class="rating-prc">
+                    <div class="rtp">
+                      <div class="rtb"><span style="width:${gameRating * 10}%"></span></div>
                     </div>
-                    <div class="numscore">${gameRating}</div>
                   </div>
+                  <div class="numscore">${gameRating}</div>
                 </div>
               </div>
             </div>
-          </a>
-        </div>
-      `;
+          </div>
+        </a>
+      </div>
+    `;
 
-      gameBox.innerHTML = gameBoxContent;
-    }
+    gameBox.innerHTML = gameBoxContent;
   } catch (error) {
     console.log(error);
   }
