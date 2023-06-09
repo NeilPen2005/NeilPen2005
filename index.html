@@ -256,13 +256,13 @@ async function fetchHighestRatedGame() {
     document.getElementById("highestRatedWeekly").innerHTML = `
       <div class="ctr">1</div>
       <div class="imgseries">
-        <a class="series" href="" rel="">
+        <a class="series" href="${highestRatedGame.website}" rel="">
           <img src="${highestRatedGame.background_image}" class="ts-post-image wp-post-image attachment-medium size-medium" loading="lazy" alt="">
         </a>
       </div>
       <div class="leftseries">
         <h2>
-          <a class="series" href="" rel="">${highestRatedGame.name}</a>
+          <a class="series" href="${highestRatedGame.website}" rel="">${highestRatedGame.name}</a>
         </h2>
         <span><b>Genres</b>: ${highestRatedGame.genres.map(genre => `<a href="" rel="tag">${genre.name}</a>`).join(", ")}</span>
         <div class="rt">
@@ -283,6 +283,7 @@ async function fetchHighestRatedGame() {
 }
 
 fetchHighestRatedGame();
+
 </script>
 
             <div class="serieslist pop wpop wpop-monthly" style="display: none;">
