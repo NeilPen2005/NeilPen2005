@@ -226,7 +226,7 @@ async function fetchSecondPopularGame() {
       const gameBoxContent = `
         <div class="bsx">
           <a href="#" title="${gameTitle}">
-            <div class="limit" id="game-image-container">
+            <div class="limit">
               <div class="ply"></div>
               <img src="${gameImage}" class="ts-post-image wp-post-image attachment-medium size-medium game-image" loading="lazy" alt="">
             </div>
@@ -254,9 +254,8 @@ async function fetchSecondPopularGame() {
 
       gameBox.innerHTML = gameBoxContent;
 
-      const gameImageContainer = document.getElementById("game-image-container");
-      const gameImageElement = gameImageContainer.querySelector("img");
-      gameImageElement.style.height = "100%"; // Set the height of the image to fill the container
+      const gameImageContainer = document.querySelector(".limit");
+      gameImageContainer.style.height = "100%"; // Set the height of the container to fill the available space
     } else {
       console.log("Insufficient non-NSFW games found.");
     }
@@ -266,6 +265,7 @@ async function fetchSecondPopularGame() {
 }
 
 fetchSecondPopularGame();
+
 
 </script>
 
