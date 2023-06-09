@@ -181,7 +181,7 @@ fetchPopularGame();
       <div class="bs">
         <div class="bsx">
           <a href="#" title="">
-            <div class="limit" id="game-image-container">
+            <div class="limit" id="game-image-container2">
               <div class="ply"></div>
               <img src="" class="ts-post-image wp-post-image attachment-medium size-medium game-image" loading="lazy" alt="">
             </div>
@@ -206,17 +206,17 @@ fetchPopularGame();
       </div>
 <script>const apiKey = "5206b0091f914fada1003edb4613060f";
 
-async function fetchPopularGame() {
+async function fetchSecondPopularGame() {
   try {
     const response = await fetch(`https://api.rawg.io/api/games?key=${apiKey}&ordering=-rating&tags_exclude=nsfw`);
     const data = await response.json();
 
     const games = data.results.filter(game => !game.tags.some(tag => tag.slug === "nsfw"));
 
-    if (games.length > 0) {
-      const game = games[0];
+    if (games.length > 1) {
+      const game = games[1];
 
-      const gameBox = document.querySelector(".bs");
+      const gameBox = document.querySelector(".bs:nth-child(2)");
 
       const gameTitle = game.name;
       const gameImage = game.background_image;
@@ -226,7 +226,7 @@ async function fetchPopularGame() {
       const gameBoxContent = `
         <div class="bsx">
           <a href="#" title="${gameTitle}">
-            <div class="limit" id="game-image-container">
+            <div class="limit" id="game-image-container2">
               <div class="ply"></div>
               <img src="${gameImage}" class="ts-post-image wp-post-image attachment-medium size-medium game-image" loading="lazy" alt="">
             </div>
@@ -254,18 +254,19 @@ async function fetchPopularGame() {
 
       gameBox.innerHTML = gameBoxContent;
 
-      const gameImageContainer = document.getElementById("game-image-container");
+      const gameImageContainer = document.getElementById("game-image-container2");
       const gameImageElement = gameImageContainer.querySelector("img");
       gameImageElement.style.height = "100%"; // Set the height of the image to fill the container
     } else {
-      console.log("No non-excluded games found.");
+      console.log("Insufficient non-NSFW games available for the second game.");
     }
   } catch (error) {
     console.log(error);
   }
 }
 
-fetchPopularGame();
+fetchSecondPopularGame();
+
 
 </script>
 
