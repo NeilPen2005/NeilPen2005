@@ -267,7 +267,8 @@ async function fetchSecondPopularGame() {
 
     const gameImageContainer = document.getElementById("game-image-container2");
     const gameImageElement = gameImageContainer.querySelector("img");
-    gameImageElement.style.height = "100%"; // Set the height of the image to fill the container
+    gameImageElement.style.objectFit = "cover";
+    gameImageElement.style.objectPosition = "center";
   } catch (error) {
     console.log(error);
   }
